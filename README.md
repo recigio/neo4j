@@ -183,3 +183,45 @@ WHERE m.title in r.roles
 RETURN m.title, p.name, r.roles
 ```
 
+## Exercicio 5
+
+5.1
+```
+MATCH (a:Person)-[:ACTED_IN]->(m:Movie)<-[:DIRECTED]-(d:Person),
+      (a2:Person)-[:ACTED_IN]->(m)
+WHERE a.name = 'Gene Hackman'
+RETURN m.title as filme, d.name AS diretor , a2.name AS `co autores`
+```
+
+5.2
+```
+MATCH (p1:Person)-[:FOLLOWS]-(p2:Person)
+WHERE p1.name = 'James Thompson'
+RETURN p1, p2
+```
+
+5.3
+```
+MATCH (p1:Person)-[:FOLLOWS*3]-(p2:Person)
+WHERE p1.name = 'James Thompson'
+RETURN p1, p2
+```
+
+5.4
+```
+MATCH (p1:Person)-[:FOLLOWS*1..2]-(p2:Person)
+WHERE p1.name = 'James Thompson'
+RETURN p1, p2
+```
+
+5.5
+```
+MATCH (p1:Person)-[:FOLLOWS*]-(p2:Person)
+WHERE p1.name = 'James Thompson'
+RETURN p1, p2
+```
+
+5.6
+```
+
+``` 
