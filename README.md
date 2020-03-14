@@ -251,13 +251,13 @@ MATCH (p:Person)-[r:REVIEWED]->(m:Movie)
 RETURN m.title, count(p) AS `total de criticas`, collect(p.name) AS `criticos`
 ```
 
-6.10
+5.10
 ```
 MATCH (p:Person)-[r:DIRECTED]->(m:Movie)<-[r2:ACTED_IN]-(p2:Person)
 RETURN m.title,p.name, count(p2) AS `total de atores`, collect(p2.name) AS `atores`
 ```
 
-6.11
+5.11
 ```
 MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
 WITH  a, count(a) AS numeroFiles, collect(m.title) AS filmes
@@ -265,7 +265,7 @@ WHERE numeroFiles = 5
 RETURN a.name, filmes
 ```
 
-6.12
+5.12
 ```
 MATCH (a:Person)-[:DIRECTED]->(m:Movie)<-[r2:ACTED_IN]-(p2)
 WITH  collect(a.name) as diretores,m, count(a) as numeroDiretores, collect(p2.name) AS atores
@@ -273,7 +273,7 @@ WHERE numeroDiretores = 2
 RETURN diretores,m.title, atores
 ```
 
-6.13
+5.13
 ```
 MATCH (m:Movie)
 WITH m, size((:Person)-[:DIRECTED]->(m)) AS diretores
@@ -282,5 +282,57 @@ OPTIONAL MATCH (p:Person)-[:REVIEWED]->(m)
 RETURN  m.title, p.name
 ```
 
+##Exercício 6
 
+6.1
+```
+MATCH (p:Person)-[r:DIRECTED]->(m:Movie)<-[r2:ACTED_IN]-(p2:Person)
+RETURN m.title,p.name, count(p2) AS `total de atores`, collect(p2.name) AS `atores`
+```
 
+6.2
+```
+match(p:Person)-[r:ACTED_IN]->(m:Movie)
+where m.released > 1990 and m.released < 2000
+return m.released, m.title, collect(p.name)
+```
+
+6.3
+```
+match(p:Person)-[r:ACTED_IN]->(m:Movie)
+where m.released > 1990 and m.released < 2000
+return m.released, collect(m.title), collect(p.name)
+```
+
+6.4
+```
+match(p:Person)-[r:ACTED_IN]->(m:Movie)
+where m.released > 1990 and m.released < 2000
+return m.released, collect(DISTINCT m.title), collect(p.name)
+```
+
+6.5
+```
+match(p:Person)-[r:ACTED_IN]->(m:Movie)
+where m.released > 1990 and m.released < 2000
+return m.released, collect(DISTINCT m.title), collect(p.name)
+ORDER BY m.released DESC
+```
+
+6.6
+```
+match(p:Person)-[r:REVIEWED]->(m:Movie)
+return m.title, r.rating
+ORDER BY r.rating DESC
+LIMIT 5
+```
+
+6.6
+```
+match(p:Person)-[r:ACTED_IN]->(m:Movie)
+with count(p.name) as `atuacoes`,p,collect(m.title) as `filmes`
+where atuacoes < 4
+return p.name, filmes
+```
+
+##Exercício 7
