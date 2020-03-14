@@ -146,5 +146,40 @@ return p.name
 
 4.9
 ```
+MATCH (:Person)-[r:REVIEWED]->(m:Movie)
+WHERE toLower(r.summary) CONTAINS 'fun'
+RETURN  m.title as Filme, r.summary as Opiniao, r.rating as Nota
 
+MATCH (m:Movie)
+WHERE m.tagline CONTAINS 'love'
+RETURN  m.title
 ```
+
+4.10
+```
+MATCH (a:Person)-[:PRODUCED]->(m:Movie)
+WHERE NOT ((a)-[:DIRECTED]->(:Movie))
+RETURN a.name, m.title
+```
+
+4.11
+```
+MATCH (a1:Person)-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-(a2:Person)
+WHERE exists( (a2)-[:DIRECTED]->(m) )
+RETURN  a1.name as Ator, a2.name as `Ator e Diretor`, m.title as Filme
+```
+
+4.12
+```
+MATCH (m:Movie)
+WHERE m.released in [2000, 2004, 2008]
+RETURN m.title, m.released
+```
+
+4.13
+```
+MATCH (p:Person)-[r:ACTED_IN]->(m:Movie)
+WHERE m.title in r.roles
+RETURN m.title, p.name, r.roles
+```
+
