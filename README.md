@@ -336,3 +336,36 @@ return p.name, filmes
 ```
 
 ##Exercício 7
+
+7.1
+```
+match(p:Person)-[r:ACTED_IN]->(m:Movie)<-[r2:PRODUCED]-(p2)
+with m.title as `titulo`, collect(p.name) as `atores`, collect(p2.name) as `produtores`, count(p.name) as `total`
+return DISTINCT titulo,atores,total,produtores
+order by total
+```
+
+7.2
+```
+MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+WITH p, collect(m) AS filmes
+WHERE size(movies)  > 5
+RETURN p.name, filmes
+```
+
+7.3
+```
+MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+WITH p, collect(m) AS filmes
+WHERE size(filmes)  > 5
+WITH p, filmes UNWIND filmes AS movie
+RETURN p.name, movie.title
+```
+
+7.4
+```
+MATCH (a:Person{name:'Tom Hanks'})-[:ACTED_IN]->(m:Movie)
+RETURN  m.title, m.released, date().year-m.released, m.released-a.born
+```
+
+##Exercício 8
