@@ -223,5 +223,64 @@ RETURN p1, p2
 
 5.6
 ```
+MATCH (p1:Person)
+WHERE toLower(p1.name) STARTS WITH 'tom'
+RETURN p1
 
+MATCH (p:Person)
+WHERE p.name STARTS WITH 'Tom'
+OPTIONAL MATCH (p)-[:DIRECTED]->(m:Movie)
+RETURN p.name, m.title
 ``` 
+
+5.7
+```
+MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+RETURN p.name as ator, collect(m.title) AS `lista de filmes`
+```
+
+5.8
+```
+MATCH (p:Person{name:'Tom Cruise'})-[r:ACTED_IN]->(m:Movie)<-[r2:ACTED_IN]-(p2:Person)
+RETURN m.title,p.name, collect(p2.name) AS `quadjuvantes`
+```
+
+5.9
+```
+MATCH (p:Person)-[r:REVIEWED]->(m:Movie)
+RETURN m.title, count(p) AS `total de criticas`, collect(p.name) AS `criticos`
+```
+
+6.10
+```
+MATCH (p:Person)-[r:DIRECTED]->(m:Movie)<-[r2:ACTED_IN]-(p2:Person)
+RETURN m.title,p.name, count(p2) AS `total de atores`, collect(p2.name) AS `atores`
+```
+
+6.11
+```
+MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WITH  a, count(a) AS numeroFiles, collect(m.title) AS filmes
+WHERE numeroFiles = 5
+RETURN a.name, filmes
+```
+
+6.12
+```
+MATCH (a:Person)-[:DIRECTED]->(m:Movie)<-[r2:ACTED_IN]-(p2)
+WITH  collect(a.name) as diretores,m, count(a) as numeroDiretores, collect(p2.name) AS atores
+WHERE numeroDiretores = 2 
+RETURN diretores,m.title, atores
+```
+
+6.13
+```
+MATCH (m:Movie)
+WITH m, size((:Person)-[:DIRECTED]->(m)) AS diretores
+WHERE diretores >= 2
+OPTIONAL MATCH (p:Person)-[:REVIEWED]->(m)
+RETURN  m.title, p.name
+```
+
+
+
