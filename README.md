@@ -88,3 +88,63 @@ match(movie:Movie{title:'Top Gun'})<-[rel:ACTED_IN]-(p:Person) return movie.titl
 ```
 
 ## Exercício 4
+
+4.1
+```
+match(p:Person)-[:ACTED_IN]->(m:Movie)
+where p.name = 'Tom Cruise'
+return m.title as Filme
+```
+
+4.2
+```
+match(p:Person)
+where p.born > 1969 and p.born < 1980
+return p.name, p.born
+```
+
+4.3
+```
+match(p:Person)-[:ACTED_IN]->(m:Movie)
+where p.born > 1960 and m.title='The Matrix'
+return p.name, p.born
+```
+
+4.4
+```
+match(m)
+where m:Movie and m.released=2000
+return m.title
+```
+
+4.5
+```
+match(p)-[rel]->(m)
+where m:Movie and p:Person and type(rel)='ACTED_IN'
+return p.name,m.title
+```
+
+4.6
+```
+match(p)
+where p:Person and not(exists(p.born))
+return p.name
+```
+
+4.7
+```
+match(p:Person)-[rel]->(m:Movie)
+where exists(rel.rating)
+return p.name,m.title,rel.rating
+```
+4.8
+```
+match(p:Person)-[:ACTED_IN]->(m:Movie)
+where p.name STARTS WITH 'James'
+return p.name
+```
+
+4.9
+```
+
+```
