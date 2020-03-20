@@ -592,8 +592,42 @@ return p, rel, m
 ##Exercício 10
 
 Exercise 10.1: Delete a relationship.
+```
+MATCH (:Person)-[rel:HELPED]-(:Person)
+DELETE rel
+```
+
 Exercise 10.2: Confirm that the relationship has been deleted.
+```
+MATCH (p1:Person)-[rel:HELPED]-(p2:Person)
+return p1, rel, p2
+```
+
 Exercise 10.3: Retrieve a movie and all of its relationships.
+```
+MATCH (m:Movie{title:"Cidade de Deus"})-[rel]-(p:Person)
+return m, rel, p
+```
+
 Exercise 10.4: Try deleting a node without detaching its relationships.
+```
+MATCH (m:Movie)
+WHERE m.title = 'Cidade de Deus'
+DELETE m
+
+Cannot delete node<180>, because it still has relationships. To delete this node, you must first delete its relationships.
+```
+
 Exercise 10.5: Delete a Movie node, along with its relationships.
+```
+MATCH (m:Movie)
+WHERE m.title = 'Cidade de Deus'
+DETACH DELETE m
+```
+
 Exercise 10.6: Confirm that the Movie node has been deleted.
+```
+MATCH (p:Person)-[rel]-(m:Movie)
+WHERE m.title = 'Cidade de Deus'
+RETURN p, rel, m
+```
