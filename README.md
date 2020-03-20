@@ -6,11 +6,11 @@ Atividades relacionadas Neo4J da pós de DataScience da Furb.
 
 ## Exercício 1
 
-Exercise 1.1: Retrieve all nodes from the database
+1.1: Retrieve all nodes from the database
 ```
 1.1 match(a) return a
 ```
-Exercise 1.2: Examine the data model for the graph
+1.2: Examine the data model for the graph
 ```
 1.2 CALL db.schema()
 ```
@@ -24,31 +24,29 @@ Exercise 1.2: Examine the data model for the graph
 ```
 ## Exercício 2
 
-Exercise •.•.•.••
-
 2.1: Retrieve all movies that were released in a specific year.
 ```
 2.1 match(movie:Movie{released:2003}) return movie
 ```
-Exercise 2.2: View the retrieved results as a table
+2.2: View the retrieved results as a table
 ```
 2.2 Clicar no icone da tabela do resultado
 ```
-Exercise 2.3: Query the database for all property keys
+2.3: Query the database for all property keys
 ```
 2.3 CALL db.propertyKeys
 ```
-Exercise 2.4: Retrieve all Movies released in a specific year, returning their titles
+2.4: Retrieve all Movies released in a specific year, returning their titles
 ```
 2.4 match(movie:Movie{released:2006}) return movie.title, 
 
 match(movie:Movie{released:2006}) return movie.title, movie.released, movie.rating
 ```
-Exercise 2.5: Display title, released, and tagline values for every Movie node in the graph.
+2.5: Display title, released, and tagline values for every Movie node in the graph.
 ```
 2.5 match(a:Movie) return a.title, a.released, a.tagline
 ```
-Exercise 2.6: Display more user-friendly headers in the table
+2.6: Display more user-friendly headers in the table
 ```
 2.6 MATCH (m:Movie) RETURN m.title AS `titulo`, m.released AS `lancamento`, m.tagline AS `slogan`
 ```
@@ -83,7 +81,6 @@ match(movie:Movie)<--(p:Person{name:'Kevin Pollak'}) return movie
 match(movie:Movie{title:'Cloud Atlas'})<--(p:Person) return p
 ```
 3.4: Retrieve information about the relationships Tom Hanks had with the set of movies retrieved earlier
-3.4
 ```
 match(movie:Movie)<-[rel]-(p:Person{name:'Tom Hanks'}) return movie.title,type(rel)
 
@@ -91,7 +88,6 @@ match(movie:Movie)<-[rel]-(p:Person{name:'Keanu Reeves'}) return movie.title,typ
 
 ```
 3.5: Retrieve information about the roles that Tom Hanks acted in.
-3.5
 ```
 match(movie:Movie)<-[rel]-(p:Person{name:'Tom Hanks'}) return movie.title,rel.roles
 
@@ -374,3 +370,125 @@ RETURN  m.title, m.released, date().year-m.released, m.released-a.born
 ```
 
 ##Exercício 8
+
+8.1 Create a Movie node
+```
+CREATE (:Movie {title: 'Cidade de Deus'})
+Added 1 label, created 1 node, set 1 property, completed after 3 ms.
+```
+
+8.2 Retrieve the newly-created node
+```
+Match(m:Movie{title:'Cidade de Deus'})
+return m
+```
+8.3 Create a Person node 
+```
+CREATE (:Person {name: 'Robin Wright'})
+```
+
+8.4 Retrieve the Person node you just created by its name
+```
+MATCH (p:Person{name:'Robin Wright'})
+RETURN p
+```
+
+8.5: Add a label to a node
+```
+MATCH (m:Movie)
+WHERE m.released < 2010
+SET m:OlderMovie
+RETURN m.title
+```
+8.6 Retrieve the node using the new labe
+```
+MATCH (m:OlderMovie)
+RETURN m.title
+```
+
+8.7 Add the Female label to selected nodes
+```
+MATCH (p:Person)
+where p.name STARTS WITH 'Robin'
+SET p:FEMALE
+```
+
+Exercise 8.8: Retrieve all Female nodes
+```
+MATCH (p:Female)
+RETURN p
+```
+
+Exercise 8.9: Remove the Female label from the nodes that have this labels
+```
+MATCH (p:Female)
+REMOVE p:Female
+```
+
+Exercise 8.10: View the current schema of the graph
+```
+CALL db.schema
+```
+
+Exercise 8.11: Add properties to a movie 
+```
+MATCH (m:Movie)
+WHERE m.title = 'Cidade de Deus'
+SET m:OlderMovie,
+    m.released = 1994,
+    m.tagline = "Life is like a box of chocolates...you never know what you're gonna get.",
+    m.lengthInMinutes = 142
+
+OBS:Alterado por que foi o filme cadastrado
+```
+
+Exercise 8.12: Retrieve an OlderMovie node to confirm the label and properties
+```
+MATCH (m:OlderMovie)
+WHERE m.title = 'Cidade de Deus'
+RETURN m
+```
+
+Exercise 8.13: Retrieve an OlderMovie node to confirm the label and properties
+```
+MATCH (p:Person)
+WHERE p.name = 'Robin Wright'
+SET p.born = 1966, p.birthPlace = 'Dallas'
+```
+
+Exercise 8.14: Retrieve an updated Person 
+```
+MATCH (p:Person)
+WHERE p.name = 'Robin Wright'
+return p
+```
+
+Exercise 8.15: Remove a property from a Movie node
+```
+MATCH (m:Movie)
+WHERE m.title = 'Cidade de Deus'
+SET m.lengthInMinutes = null
+```
+
+Exercise 8.16: Retrieve the node to confirm that the property has been removed
+```
+MATCH (m:Movie)
+WHERE m.title = 'Cidade de Deus'
+RETURN m
+```
+
+Exercise 8.17: Retrieve the node to confirm that the property has been removed
+```
+MATCH (p:Person)
+WHERE p.name = 'Robin Wright'
+REMOVE  p.birthPlace
+```
+
+Exercise 8.18: Retrieve the node to confirm that the property has been removed
+```
+MATCH (p:Person)
+WHERE p.name = 'Robin Wright'
+RETURN p
+```
+
+##Exercício 9
