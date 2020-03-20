@@ -492,3 +492,108 @@ RETURN p
 ```
 
 ##Exercício 9
+
+Exercise 9.1: Create ACTED_IN relationships.
+```
+MATCH (m:Movie)
+WHERE m.title = 'Cidade de Deus'
+MATCH (p:Person)
+WHERE p.name = 'Tom Hanks' OR p.name = 'Robin Wright' OR p.name = 'Gary Sinise'
+CREATE (p)-[:ACTED_IN]->(m)
+```
+
+Exercise 9.2: Create DIRECTED relationships.
+```
+MATCH (m:Movie)
+WHERE m.title = 'Cidade de Deus'
+MATCH (p:Person)
+WHERE p.name = 'Robert Zemeckis'
+CREATE (p)-[:DIRECTED]->(m)
+```
+
+Exercise 9.3: Create a HELPED relationship.
+```
+MATCH (p1:Person)
+WHERE p1.name = 'Tom Hanks'
+MATCH (p2:Person)
+WHERE p2.name = 'Gary Sinise'
+CREATE (p1)-[:HELPED]->(p2)
+```
+
+Exercise 9.4: Query nodes and new relationships.
+```
+MATCH (m:Movie{title:"Cidade de Deus"})-[r]-(p:Person)
+return m,r,p
+```
+
+Exercise 9.5: Add properties to relationships.
+```
+MATCH (p:Person)-[rel:ACTED_IN]->(m:Movie)
+WHERE m.title = 'Cidade de Deus'
+SET rel.roles =
+CASE p.name
+  WHEN 'Tom Hanks' THEN ['Forrest Gump']
+  WHEN 'Robin Wright' THEN ['Jenny Curran']
+  WHEN 'Gary Sinise' THEN ['Lieutenant Dan Taylor']
+END
+```
+
+Exercise 9.6: Add a property to the HELPED relationship.
+```
+MATCH (p1:Person)-[rel:HELPED]->(p2:Person)
+WHERE p1.name = 'Tom Hanks' AND p2.name = 'Gary Sinise'
+SET rel.research = 'war history'
+```
+
+Exercise 9.7: View the current list of property keys in the graph.
+```
+call db.propertyKeys
+```
+
+Exercise 9.8: View the current schema of the graph.
+```
+call db.schema
+```
+
+Exercise 9.9: Retrieve the names and roles for actors.
+```
+MATCH (p:Person)-[rel:ACTED_IN]->(m:Movie)
+WHERE m.title = 'Cidade de Deus'
+return p.name, rel.roles
+```
+
+Exercise 9.10: Retrieve information about any specific relationships.
+```
+MATCH (p1:Person)-[rel:HELPED]-(p2:Person)
+RETURN p1.name, rel, p2.name
+```
+
+Exercise 9.11: Modify a property of a relationship.
+```
+MATCH (p:Person)-[rel:ACTED_IN]->(m:Movie)
+WHERE m.title = 'Cidade de Deus' AND p.name = 'Gary Sinise'
+SET rel.roles =['Lt. Dan Taylor']
+```
+
+Exercise 9.12: Remove a property from a relationship.
+```
+MATCH (p1:Person)-[rel:HELPED]->(p2:Person)
+WHERE p1.name = 'Tom Hanks' AND p2.name = 'Gary Sinise'
+REMOVE rel.research
+```
+
+Exercise 9.13: Confirm that your modifications were made to the graph.
+```
+MATCH (p:Person)-[rel:ACTED_IN]->(m:Movie)
+WHERE m.title = 'Cidade de Deus'
+return p, rel, m
+```
+
+##Exercício 10
+
+Exercise 10.1: Delete a relationship.
+Exercise 10.2: Confirm that the relationship has been deleted.
+Exercise 10.3: Retrieve a movie and all of its relationships.
+Exercise 10.4: Try deleting a node without detaching its relationships.
+Exercise 10.5: Delete a Movie node, along with its relationships.
+Exercise 10.6: Confirm that the Movie node has been deleted.
